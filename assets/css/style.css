@@ -355,3 +355,7 @@ body {
 .fDiv{
   border-right: 5px solid red;
 }
+
+.forum-output {
+  margin: 50px;
+}

@@ -24,6 +24,7 @@ function search(event) {
   event.preventDefault();
   //clear movie-display for new search
   $(".show").html("");
+  $(".forum-output").html("");
   $(".user-data-input").html("");
   $(".movie-display").html("");
   $(".showclick").html("");
@@ -166,6 +167,7 @@ function trend() {
   }).then(function (response) {
     console.log(response)
     $(".show").html("");
+    $(".forum-output").html("");
     $(".user-data-input").html("");
     $(".movie-display").html("");
     $(".showclick").html("");
@@ -353,6 +355,7 @@ function showclick() {
   }).then(function (response) {
     console.log(response);
     $(".show").html("");
+    $(".forum-output").html("");
     $(".user-data-input").html("");
     $(".movie-display").html("");
     $(".showclick").html("");
@@ -434,6 +437,7 @@ function bookclick() {
   }).then(function (response) {
     console.log(response);
     $(".show").html("");
+    $(".forum-output").html("");
     $(".user-data-input").html("");
     $(".movie-display").html("");
     $(".showclick").html("");
@@ -486,7 +490,7 @@ $(document).on("click", ".movieimghome", function () {
 $(document).on("click", ".movieimgsearch", function () {
   console.log($(this)[0].nextElementSibling.nextElementSibling.innerHTML)
   keywork = $(this)[0].nextElementSibling.nextElementSibling.innerHTML
-  // $(".show").html("")
+  
 
   showclick();
 });
@@ -506,6 +510,7 @@ var hadAddInput = false;
 //onclick for input user, push data info on firebase
 $(document).on("click", "#add-btn", function (event) {
   event.preventDefault();
+  console.log("I click")
   hadAddInput = true;
 
   var name = $("#name-input").val().trim();
@@ -644,7 +649,7 @@ function checkBoxBook() {
 //END
 
 
-
+var userDiv;
 
 var userId;
 var userexist;
@@ -672,14 +677,23 @@ $(document).on("click", "#favorite", function (event) {
 });
 //END
 
+var totalDiv = $("<div>");
+// $(document).on("click", "#output", function () {
+    // $(".forum-output").html("");
+    
 
-$(document).on("click", "#output", function () {
-  $(".show").html("");
-    $(".user-data-input").html("");
+    
+  // $(".forum-output").append(totalDiv);
+// });
+//END
+
+$(document).ready(function(){
+  database.ref().on("child_added", function (childSnapshot) {
     $(".movie-display").html("");
     $(".showclick").html("");
     $(".book-display").html("");
-  database.ref().on("child_added", function (childSnapshot) {
+    // $(".show").html("");
+    // $(".user-data-input").html("");
 
     var id = childSnapshot.key;
     console.log("ID: " + id);
@@ -702,7 +716,7 @@ $(document).on("click", "#output", function () {
     console.log("Firebase pull, User Favorite Movies Info: " + userFav);
     console.log("Firebase pull, User Favorite Book Info: " + userFavBook);
 
-    var userDiv = $("<div class='userDiv row mt-5'></div>");
+    userDiv = $("<div class='userDiv row mt-5'></div>");
 
     var fDiv = $("<div class='fDiv col-4 text-center'></div>");
     var ul = $('<ul style="list-style-type:none;">');
@@ -721,11 +735,13 @@ $(document).on("click", "#output", function () {
     
 
     userDiv.append(fDiv, divForum, divFav, divFavBook);
-    $(".show").append(userDiv);
-
     
+    // $(".forum-output").append(userDiv);
+    
+    totalDiv.append(userDiv)
+    $(".forum-output").append(totalDiv);
+
+    // onhome();
   });
 
-onhome();
-});
-//END
+})
