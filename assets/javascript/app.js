@@ -366,7 +366,7 @@ function showclick() {
     }
     // var checkBoxDiv = $("<div> </div>");
     // checkBoxDiv.append(checkBox);
-    var checkBox = $("<div class='font-weight-bold'>Favorite: <i class='far fa-square' box='unchecked'></div>");
+    var checkBox = $("<div class='font-weight-bold'>Favorite: <i class='showfav far fa-square' box='unchecked'></div>");
     // var checkBox = $("<div class='font-weight-bold'>Favorite: <i class='far fa-square'></div>");
 
 
@@ -460,6 +460,8 @@ function bookclick() {
       var bookImg = $("");
     }
 
+    var checkBox = $("<div class='font-weight-bold'>Favorite: <i class='bookfav far fa-square' box='unchecked'></div>");
+
     var categories = $("<div><b>Categories: </b>" + response.items[i].volumeInfo.categories + "</div>")
     var rating = $("<div><b>Rating: </b>" + response.items[i].volumeInfo.averageRating + "</div>")
     var overview = $("<div><b>Plot: </b>" + response.items[i].volumeInfo.description + "</div>")
@@ -467,7 +469,7 @@ function bookclick() {
     var authors = $("<div><b>Authors: </b>" + response.items[i].volumeInfo.authors + "</div>")
 
     // $(".showclick").append(bookImg).append(bookTitle).append(categories).append(authors).append(rating).append(release_date).append(overview);
-    $(".show").append(bookImg).append(bookTitle).append(categories).append(authors).append(rating).append(release_date).append(overview);
+    $(".show").append(bookImg).append(bookTitle).append(checkBox).append(categories).append(authors).append(rating).append(release_date).append(overview);
 
   })
 
@@ -501,6 +503,7 @@ $(document).on("click", ".bookimgsearch", function () {
 ////////////////Fire Base///////////////
 
 var hadAddInput = false;
+//onclick for input user, push data info on firebase
 $(document).on("click", "#add-btn", function (event) {
   event.preventDefault();
   hadAddInput = true;
@@ -509,7 +512,7 @@ $(document).on("click", "#add-btn", function (event) {
   var age = $("#age-input").val().trim();
   var email = $("#email-input").val().trim();
   var forum = $("#forum").val().trim();
-  
+
 
   var newData = {
     name: name,
@@ -537,9 +540,9 @@ $(document).on("click", "#add-btn", function (event) {
 });
 //END
 
-// var state;
+//on click check box favorite movie and tv shows
 var arrFav = [];
-$(document).on("click", ".far", checkBox);
+$(document).on("click", ".showfav", checkBox);
 
 function checkBox() {
   var fav = $(this).parent().parent()[0].childNodes[2].innerText;
@@ -548,7 +551,7 @@ function checkBox() {
   var state = $(this).attr("box");
   //add favorite movie if check
   if (state === "unchecked") {
-    $(this).attr("class", "far fa-check-square");
+    $(this).attr("class", "showfav far fa-check-square");
     $(this).attr("box", "checked");
     //check if the arrFav is empty
     if (arrFav.length === 0) {
@@ -563,7 +566,7 @@ function checkBox() {
         if (fav === arrFav[i]) {
           console.log("Already exist!")
           isexist++;
-        } 
+        }
       }
     }
     //???????????????????????????????
@@ -578,15 +581,70 @@ function checkBox() {
   }
   //remove favorite movie if uncheck
   if (state === "checked") {
-    $(this).attr("class", "far fa-square");
+    $(this).attr("class", "showfav far fa-square");
     $(this).attr("box", "unchecked");
-    arrFav.pop();
+      arrFav.pop();
     console.log(arrFav);
     database.ref().child(userId + "/fav/" + arrFav.length).remove();
   }
 
 };
 //END
+
+//on click check box of favorite book
+var arrFavBook = [];
+$(document).on("click", ".bookfav", checkBoxBook);
+
+function checkBoxBook() {
+  // var fav = $(this).parent().parent()[0].childNodes[2].innerText;
+  var fav = $(this).parent().parent()[0].childNodes[1].innerText;
+  // console.log(fav);
+
+  var state = $(this).attr("box");
+  //add favorite movie if check
+  if (state === "unchecked") {
+    $(this).attr("class", "bookfav far fa-check-square");
+    $(this).attr("box", "checked");
+    //check if the arrFavBook is empty
+    if (arrFavBook.length === 0) {
+      arrFavBook.push(fav);
+      console.log(arrFavBook);
+
+      // database.ref().child(userId+"/fav").set(arrFavBook);
+      //only add to favorite array if movie had not pick yet
+    } else {
+      var isexist = 0;
+      for (var i = 0; i < arrFavBook.length; i++) {
+        if (fav === arrFavBook[i]) {
+          console.log("Already exist!")
+          isexist++;
+        }
+      }
+    }
+    //push title to array
+    if (isexist === 0) {
+      console.log("You can add!")
+      arrFavBook.push(fav);
+      console.log(arrFavBook);
+
+      // database.ref().child(userId+"/fav").set(arrFavBook);
+    }
+
+  }
+  //remove favorite movie if uncheck
+  if (state === "checked") {
+    $(this).attr("class", "bookfav far fa-square");
+    $(this).attr("box", "unchecked");
+      arrFavBook.pop();
+    console.log(arrFavBook);
+    database.ref().child(userId + "/fav/" + arrFavBook.length).remove();
+  }
+
+};
+//END
+
+
+
 
 var userId;
 var userexist;
@@ -606,6 +664,8 @@ $(document).on("click", "#favorite", function (event) {
     if (hadAddInput === true) {
       if (userexist === true) {
         database.ref().child(userId + "/fav").set(arrFav);
+        database.ref().child(userId + "/favbook").set(arrFavBook);
+
       }
     }
   }
@@ -614,7 +674,13 @@ $(document).on("click", "#favorite", function (event) {
 
 
 $(document).on("click", "#output", function () {
+  $(".show").html("");
+    $(".user-data-input").html("");
+    $(".movie-display").html("");
+    $(".showclick").html("");
+    $(".book-display").html("");
   database.ref().on("child_added", function (childSnapshot) {
+
     var id = childSnapshot.key;
     console.log("ID: " + id);
     // console.log(Object.keys(childSnapshot));
@@ -627,24 +693,39 @@ $(document).on("click", "#output", function () {
     var userEmail = childSnapshot.val().email;
     var userForum = childSnapshot.val().forum;
     var userFav = childSnapshot.val().fav;
+    var userFavBook = childSnapshot.val().favbook;
     // User Info
     console.log("Firebase pull, User Name Info: " + userName);
     console.log("Firebase pull, User Age Info: " + userAge);
     console.log("Firebase pull, User Email Time Info: " + userEmail);
     console.log("Firebase pull, User Message Info: " + userForum);
-    console.log("Firebase pull, User Message Info: " + userFav);
+    console.log("Firebase pull, User Favorite Movies Info: " + userFav);
+    console.log("Firebase pull, User Favorite Book Info: " + userFavBook);
 
-    var fDiv = $("<div class='fDiv'></div>");
+    var userDiv = $("<div class='userDiv row mt-5'></div>");
+
+    var fDiv = $("<div class='fDiv col-4 text-center'></div>");
     var ul = $('<ul style="list-style-type:none;">');
-    var liName = $("<li class='liName'>"+userName+"</li>");
-    var liAge = $("<li>"+userAge+"</li>");
-    var liEmail = $("<li>"+userEmail+"</li>");
+    var liName = $("<li class='liName font-weight-bold h1'>" + userName + "</li>");
+    var liAge = $("<li>" + userAge + "</li>");
+    var liEmail = $("<li>" + userEmail + "</li>");
     ul.append(liName, liAge, liEmail);
     fDiv.append(ul);
-    $(".show").append(fDiv);
+    // $(".show").append(fDiv);
+
+    var divForum = $("<div class='divForum col-8'>" + userForum + "</div>");
+
+    var divFav = $("<div class='divFav' ><b>Favorite Movies and TV Shows: </b>" + userFav + "</div>");
+    
+    var divFavBook = $("<div class ='divFavBook'><b>Favorite Books: </b>"+userFavBook+"</div>")
+    
+
+    userDiv.append(fDiv, divForum, divFav, divFavBook);
+    $(".show").append(userDiv);
 
     
   });
 
+onhome();
 });
 //END

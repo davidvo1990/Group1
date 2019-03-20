@@ -4,6 +4,7 @@
 
   body {
     font-family: Verdana, sans-serif;
+    /* font-family: 'Khula', sans-serif; */
     margin: 0
   }
 
@@ -279,7 +280,7 @@ body {
 }
 
 
-.mTitle, .titlenav {
+.mTitle, .titlenav, .liName {
   animation: textchangecolor 5s;
   /* animation-name followed by duration in seconds*/
   /* you could also use milliseconds (ms) or something like 2.5s */
@@ -332,4 +333,25 @@ body {
   100% {
       color: red;
   }
+}
+
+.divFav,
+.divFavBook{
+  width: 100%;
+}
+
+.userDiv {
+  border: 5px solid red;
+  color: white;
+  background: black;
+  font-size: 20px;
+}
+
+.divFav,
+.divFavBook
+{
+  border-top: 5px solid red;
+}
+.fDiv{
+  border-right: 5px solid red;
 }
