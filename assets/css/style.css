@@ -668,3 +668,10 @@ margin: 10px;
   }
 }
 
+#chatprintout:nth-child(odd){
+  color:blue;
+  }
+  
+  #chatprintout:nth-child(even){
+  color:red;
+  }
