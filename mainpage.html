@@ -44,25 +44,50 @@
 
   <!-- HTML start here -->
   <!-- Nav bar -->
-  <nav class="navbar navbar-dark bg-dark text-light justify-content-between">
+  <nav class="navbar navbar-dark bg-dark text-light justify-content-between mb-5">
     <a class="navbar-brand onhome titlenav" href="#">
-      <h1>Project Awesome</h1>
-      <!-- <button class="btn btn-outline-warning my-2 my-sm-0" id="output" type="button">Forum</button> -->
-      <button class="btn btn-outline-warning my-2 my-sm-0" id="favorite" type="button">Favorite</button>
+      <h1 class="row">
+        <div class="fingerprint-spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+        </div>
+        Project Awesome
+        <div class="fingerprint-spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+        </div>
+      </h1>
     </a>
-    <!-- <button class="btn btn-outline-warning my-2 my-sm-0" id="output" type="button">Forum</button>
-    <button class="btn btn-outline-warning my-2 my-sm-0" id="favorite" type="button">Favorite</button> -->
 
     <form class="form-inline">
+      <div class="foruman">
+        <button class="btn btn-outline-warning my-2 my-sm-0 mr-2" id="output" type="button">Forum</button>
+      </div>
+      <button class="btn btn-outline-warning my-2 my-sm-0 mr-2" id="favorite" type="button">Favorite</button>
+
       <!-- check box for movie and books -->
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="moviesCheck">
 
-        <label class="form-check-label" for="moviesCheck">Movies</label>
+        <label class="form-check-label mr-2" for="moviesCheck">Movies</label>
       </div>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="booksCheck">
-        <label class="form-check-label" for="booksCheck">Books</label>
+        <label class="form-check-label mr-2" for="booksCheck">Books</label>
       </div>
       <!-- input search box -->
       <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search">
@@ -71,13 +96,15 @@
       <button class="btn btn-outline-success my-2 my-sm-0" id="submit" type="submit">Search</button>
     </form>
   </nav>
+
+
   <!-- main of html -->
   <div class="home">
     <div class="main">
-    <div class="show"></div>
-    <div class="user-data-input"></div>
-    <div class ="forum-output"></div>
-  </div>
+      <div class="show pl-5"></div>
+      <div class="user-data-input"></div>
+      <div class="forum-output"></div>
+    </div>
     <div class="showclick"></div>
     <div class="row">
       <div class="col-6">
@@ -88,6 +115,34 @@
       </div>
     </div>
   </div>
+
+  <!--Chat Box -->
+  <!--<div class="jumbotron container text-display"></div> -->
+
+  <button class="open-mess" onclick="openMess()">Message</button>
+  <div class="mess-popup" id="myMess">
+
+    <div class="jumbotron container text-display"></div>
+    <button type="button" class="btn clear-chat">Clear</button>
+    <button type="button" class="btn close-mess" onclick="closeMess()">Close</button>
+  </div>
+
+
+  <!--Popup chat -->
+  <button class="open-button" onclick="openForm()">Chat</button>
+
+  <div class="chat-popup" id="myForm">
+    <form class="form-container">
+      <h4>Chat</h4>
+
+      <label for="msg"><b>Message</b></label>
+      <textarea placeholder="Type message.." name="msg" id="message" required></textarea>
+
+      <button type="button" class="btn send">Send</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
+  </div>
+
 
 
 

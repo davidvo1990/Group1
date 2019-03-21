@@ -172,9 +172,10 @@ function trend() {
     $(".movie-display").html("");
     $(".showclick").html("");
     $(".book-display").html("");
+var spin=$('<div class="trinity-rings-spinner"><div class="circle"></div><div class="circle"></div><div class="circle"></div></div>')
 
     var ssshow = $('<div class="slideshow-container"></div>')
-    var toptrend = $('<h2 id="toptrend">Top Trending Movies and TV Shows</h2>')
+    var toptrend = $('<h2 class="row" id="toptrend"><div class="trinity-rings-spinner"><div class="circle"></div><div class="circle"></div><div class="circle"></div></div>Top Trending Movies and TV Shows<div class="trinity-rings-spinner"><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></h2>')
 
     var prev = $('<a class="prev" onclick="plusSlides(-1)">&#10094;</a>')
 
@@ -490,7 +491,7 @@ $(document).on("click", ".movieimghome", function () {
 $(document).on("click", ".movieimgsearch", function () {
   console.log($(this)[0].nextElementSibling.nextElementSibling.innerHTML)
   keywork = $(this)[0].nextElementSibling.nextElementSibling.innerHTML
-  
+
 
   showclick();
 });
@@ -510,7 +511,7 @@ var hadAddInput = false;
 //onclick for input user, push data info on firebase
 $(document).on("click", "#add-btn", function (event) {
   event.preventDefault();
-  console.log("I click")
+  //console.log("I click")
   hadAddInput = true;
 
   var name = $("#name-input").val().trim();
@@ -527,7 +528,7 @@ $(document).on("click", "#add-btn", function (event) {
   };
 
   // Uploads train data to the database
-  database.ref().push(newData);
+  database.ref("/users").push(newData);
 
   // Logs everything to console
   // console.log("New Name is: " + newData.name);
@@ -541,7 +542,8 @@ $(document).on("click", "#add-btn", function (event) {
   $("#email-input").val("");
   $("#forum").val("");
 
-  database.ref().child(userId + "/fav").set(arrFav);
+  database.ref("/users").child(userId + "/fav").set(arrFav);
+  database.ref("/users").child(userId + "/favbook").set(arrFavBook);
 });
 //END
 
@@ -563,24 +565,24 @@ function checkBox() {
       arrFav.push(fav);
       console.log(arrFav);
 
-      // database.ref().child(userId+"/fav").set(arrFav);
+      // database.ref("/users").child(userId+"/fav").set(arrFav);
       //???????????????????????????
     } else {
       var isexist = 0;
       for (var i = 0; i < arrFav.length; i++) {
         if (fav === arrFav[i]) {
-          console.log("Already exist!")
+          //console.log("Already exist!")
           isexist++;
         }
       }
     }
     //???????????????????????????????
     if (isexist === 0) {
-      console.log("You can add!")
+      //console.log("You can add!")
       arrFav.push(fav);
       console.log(arrFav);
 
-      // database.ref().child(userId+"/fav").set(arrFav);
+      // database.ref("/users").child(userId+"/fav").set(arrFav);
     }
 
   }
@@ -588,10 +590,11 @@ function checkBox() {
   if (state === "checked") {
     $(this).attr("class", "showfav far fa-square");
     $(this).attr("box", "unchecked");
-      arrFav.pop();
+    arrFav.pop();
     console.log(arrFav);
-    database.ref().child(userId + "/fav/" + arrFav.length).remove();
+    database.ref("/users").child(userId + "/fav/" + arrFav.length).remove();
   }
+
 
 };
 //END
@@ -615,13 +618,13 @@ function checkBoxBook() {
       arrFavBook.push(fav);
       console.log(arrFavBook);
 
-      // database.ref().child(userId+"/fav").set(arrFavBook);
+      // database.ref("/users").child(userId+"/favbook").set(arrFavBook);
       //only add to favorite array if movie had not pick yet
     } else {
       var isexist = 0;
       for (var i = 0; i < arrFavBook.length; i++) {
         if (fav === arrFavBook[i]) {
-          console.log("Already exist!")
+          //console.log("Already exist!")
           isexist++;
         }
       }
@@ -632,7 +635,7 @@ function checkBoxBook() {
       arrFavBook.push(fav);
       console.log(arrFavBook);
 
-      // database.ref().child(userId+"/fav").set(arrFavBook);
+      // database.ref("/users").child(userId+"/favbook").set(arrFavBook);
     }
 
   }
@@ -640,10 +643,11 @@ function checkBoxBook() {
   if (state === "checked") {
     $(this).attr("class", "bookfav far fa-square");
     $(this).attr("box", "unchecked");
-      arrFavBook.pop();
+    arrFavBook.pop();
     console.log(arrFavBook);
-    database.ref().child(userId + "/fav/" + arrFavBook.length).remove();
+    database.ref("/users").child(userId + "/favbook/" + arrFavBook.length).remove();
   }
+
 
 };
 //END
@@ -653,7 +657,7 @@ var userDiv;
 
 var userId;
 var userexist;
-database.ref().on("value", function (snapshot) {
+database.ref("/users").on("value", function (snapshot) {
   if (snapshot.exists()) {
     userId = Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]
     console.log(userId);
@@ -668,80 +672,163 @@ $(document).on("click", "#favorite", function (event) {
   if (arrFav.length !== 0) {
     if (hadAddInput === true) {
       if (userexist === true) {
-        database.ref().child(userId + "/fav").set(arrFav);
-        database.ref().child(userId + "/favbook").set(arrFavBook);
-
+        database.ref("/users").child(userId + "/fav").set(arrFav);
+        database.ref("/users").child(userId + "/favbook").set(arrFavBook);
+        
       }
     }
   }
 });
 //END
 
-var totalDiv = $("<div>");
-// $(document).on("click", "#output", function () {
-    // $(".forum-output").html("");
-    
+var totalDiv = $("<div class='totalDiv'></div>");
+$(document).on("click", "#output", function () {
+  $(".forum-output").html("");
+  $(".movie-display").html("");
+  $(".showclick").html("");
+  $(".book-display").html("");
+  $(".show").html("");
+  $(".user-data-input").html("");
 
-    
-  // $(".forum-output").append(totalDiv);
-// });
+  //$(".totalDiv").html("");
+
+  $(".forum-output").html(totalDiv);
+
+  //delete the button
+  //$(".foruman").html("");
+  //var output = $('<button class="btn btn-outline-warning my-2 my-sm-0 mr-2" //id="output" type="button">Forum</button>')
+  //$(".foruman").html(output);
+
+  onhome();
+});
 //END
 
-$(document).ready(function(){
-  database.ref().on("child_added", function (childSnapshot) {
-    $(".movie-display").html("");
-    $(".showclick").html("");
-    $(".book-display").html("");
-    // $(".show").html("");
-    // $(".user-data-input").html("");
+read();
 
-    var id = childSnapshot.key;
-    console.log("ID: " + id);
-    // console.log(Object.keys(childSnapshot));
+//output for the forum button, use firebase 
+function read() {
 
-    console.log(childSnapshot.val());
+  $(document).ready(function () {
+    database.ref("/users").on("child_added", function (childSnapshot) {
+      //$(".totalDiv").html("")
 
-    // Store everything into a variable.
-    var userName = childSnapshot.val().name;
-    var userAge = childSnapshot.val().age;
-    var userEmail = childSnapshot.val().email;
-    var userForum = childSnapshot.val().forum;
-    var userFav = childSnapshot.val().fav;
-    var userFavBook = childSnapshot.val().favbook;
-    // User Info
-    console.log("Firebase pull, User Name Info: " + userName);
-    console.log("Firebase pull, User Age Info: " + userAge);
-    console.log("Firebase pull, User Email Time Info: " + userEmail);
-    console.log("Firebase pull, User Message Info: " + userForum);
-    console.log("Firebase pull, User Favorite Movies Info: " + userFav);
-    console.log("Firebase pull, User Favorite Book Info: " + userFavBook);
+      var id = childSnapshot.key;
+      //console.log("ID: " + id);
+      // console.log(Object.keys(childSnapshot));
 
-    userDiv = $("<div class='userDiv row mt-5'></div>");
+      //console.log(childSnapshot.val());
 
-    var fDiv = $("<div class='fDiv col-4 text-center'></div>");
-    var ul = $('<ul style="list-style-type:none;">');
-    var liName = $("<li class='liName font-weight-bold h1'>" + userName + "</li>");
-    var liAge = $("<li>" + userAge + "</li>");
-    var liEmail = $("<li>" + userEmail + "</li>");
-    ul.append(liName, liAge, liEmail);
-    fDiv.append(ul);
-    // $(".show").append(fDiv);
+      // Store everything into a variable.
+      var userName = childSnapshot.val().name;
 
-    var divForum = $("<div class='divForum col-8'>" + userForum + "</div>");
+      var userAge = childSnapshot.val().age;
+      var userEmail = childSnapshot.val().email;
+      var userForum = childSnapshot.val().forum;
+      var userFav = childSnapshot.val().fav;
+      var userFavBook = childSnapshot.val().favbook;
+      // User Info
+      //console.log("Firebase pull, User Name Info: " + userName);
+      //console.log("Firebase pull, User Age Info: " + userAge);
+      //console.log("Firebase pull, User Email Time Info: " + userEmail);
+      //console.log("Firebase pull, User Message Info: " + userForum);
+      //console.log("Firebase pull, User Favorite Movies Info: " + userFav);
+      //console.log("Firebase pull, User Favorite Book Info: " + userFavBook);
 
-    var divFav = $("<div class='divFav' ><b>Favorite Movies and TV Shows: </b>" + userFav + "</div>");
-    
-    var divFavBook = $("<div class ='divFavBook'><b>Favorite Books: </b>"+userFavBook+"</div>")
-    
+      userDiv = $("<div class='userDiv row mt-5'></div>");
 
-    userDiv.append(fDiv, divForum, divFav, divFavBook);
-    
-    // $(".forum-output").append(userDiv);
-    
-    totalDiv.append(userDiv)
-    $(".forum-output").append(totalDiv);
+      var fDiv = $("<div class='fDiv col-4 text-center'></div>");
+      var ul = $('<ul style="list-style-type:none;">');
+      var liName = $("<li class='liName font-weight-bold h1'>" + userName + "</li>");
+      var liAge = $("<li>" + userAge + "</li>");
+      var liEmail = $("<li>" + userEmail + "</li>");
+      ul.append(liName, liAge, liEmail);
+      fDiv.append(ul);
+      // $(".show").append(fDiv);
 
-    // onhome();
-  });
+      var divForum = $("<div class='divForum col-8'>" + userForum + "</div>");
 
-})
+      var divFav = $("<div class='divFav' ><b>Favorite Movies and TV Shows: </b>" + userFav + "</div>");
+
+      var divFavBook = $("<div class ='divFavBook'><b>Favorite Books: </b>" + userFavBook + "</div>")
+
+
+      userDiv.append(fDiv, divForum, divFav, divFavBook);
+
+      // $(".forum-output").append(userDiv);
+
+      totalDiv.append(userDiv)
+
+    });
+
+  })
+};
+//END
+
+
+//chat popup input
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+//END
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+//END
+
+//chat popup output
+function openMess() {
+  document.getElementById("myMess").style.display = "block";
+}
+//END
+function closeMess() {
+  document.getElementById("myMess").style.display = "none";
+}
+//END
+// message output from firebase
+function chatmessage() {
+  database.ref("/chatmessage/").on("child_added", function (snapshot) {
+    //chat message print out 
+    var idMessArr = snapshot.val()
+    //keys = Object.values(idMessArr)
+    //console.log(idMessArr)
+    //if (keys !== null){
+    //var chatprintout = $("<div id='chatprintout'>"+keys[keys.length-1]+"</div>")
+    var chatprintout = $("<div id='chatprintout'>" + idMessArr + "</div>")
+    //var chatDiv = $("<div class='chatDiv'></div>")
+    //chatDiv.prepend(chatprintout)
+    //$(".text-display").prepend(chatDiv);
+    $(".text-display").prepend(chatprintout);
+    //}
+  })
+};
+//END
+chat();
+chatmessage();
+
+
+
+function chat() {
+  $(document).on("click", ".send", function (event) {
+    var chatmess = $("#message").val().trim()
+    //console.log(chatmess);
+
+    database.ref().child("/chatmessage/").push(chatmess);
+
+    //clear out the chat box
+    $("#message").val("");
+  })
+};
+//END
+
+$(document).on("click", ".clear-chat", function (event) {
+  event.preventDefault();
+  database.ref("chatmessage/").remove();
+  $(".text-display").html("");
+});
+//END
+
+
+function Refresh() {
+  window.location.reload();
+}
+//END
