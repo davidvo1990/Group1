@@ -1,6 +1,7 @@
 # Group_Project_Awesome
 Group Project
 
+https://davidvo1990.github.io/Group1/
 
 Project Title: Where can I watch?
 
@@ -14,12 +15,10 @@ API to Used: GoWatchIt (Approval Pending) & OMDB
 
 Rough Breakdown of Tasks: 
 
-Adam Project Management/Back End
-
-Team is split into two 
-
-Front End | David & Adrian
-Back End | Adam & Dan
+Adam & Dan: Project Management
+Authentication firebase: Adam & Dan
+Front End & Back End movie api/firebase implement: David  
+Front End & Back End book api/firebase implement: Adrian
 
 Tenative Schedule/Stagegates
 
