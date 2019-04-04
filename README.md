@@ -39,3 +39,6 @@ Tuesday 4/19/19
 Thursday 4/21/19 
 -DEMO and Questions
 
+
+https://codingbootcamp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=a15bcbf8-c650-4b2e-8a2e-aa17018956e4
+<iframe src="https://codingbootcamp.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=a15bcbf8-c650-4b2e-8a2e-aa17018956e4&v=1" width="720" height="405" style="padding: 0px; border: 1px solid #464646;" frameborder="0" allowfullscreen allow="autoplay"></iframe>
